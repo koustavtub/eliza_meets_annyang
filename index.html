@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <META NAME="Description" CONTENT="Talk to Eliza!">
+    <TITLE>Eliza meets Annyang</TITLE>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body onload="start();" bgcolor=#FFFFFF>
+
+    <!-- contents -->
+
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> Use Chrome for Annyang.. Falling back To Graceful Support..
+    </div>
+    <form name="Eliza" onsubmit="return dialog();">
+
+        <center id="noannyang">
+            <font><br>Say Something:</font>
+            <input type="text" id="sayToEliza" size=5 0 NAME="input" VALUE=""></center>
+    </form>
+
+    <div class="wrapper">
+        <div class="terminal">
+            <div class="terminal__head">
+                <div class="head__circle head__circle--close"> </div>
+                <div class="head__circle head__circle--turn"> </div>
+                <div class="head__circle head__circle--expand"></div>
+                <p class="pad-left">Eliza meets Annyang</p>
+            </div>
+            <div id="typedtext" class="terminal__text" name="log"></div>
+
+        </div>
+    </div>
+
+        <div class="footer">
+            <h3>ELIZA has almost no intelligence whatsoever, only tricks like string substitution and canned responses based on keywords. Yet when the original ELIZA first appeared in the 60's, some people actually mistook her for human. The illusion of intelligence works best, however, if you limit your conversation to talking about yourself and your life.</h3>
+        </div>
+    </div>
+    </div>
+
+
+    <script src="eliza.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+
+    <script>
+        "use strict";
+
+        // first we make sure annyang started succesfully
+        if (annyang) {
+            $('#noannyang').hide();
+            $('.alert').hide();
+
+            // define the functions our commands will run.
+
+            var sayToEliza = function(tag) {
+                dialog(tag);
+
+            };
+
+            // define our commands.
+            // * The key is the phrase you want your users to say.
+            // * The value is the action to do.
+            //   You can pass a function, a function name (as a string), or write your function as part of the commands object.
+            var commands = {
+                '*tag': sayToEliza,
+
+
+            };
+
+            // OPTIONAL: activate debug mode for detailed logging in the console
+            annyang.debug();
+
+            // Add voice commands to respond to
+            annyang.addCommands(commands);
+
+            // OPTIONAL: Set a language for speech recognition (defaults to English)
+            // For a full list of language codes, see the documentation:
+            // https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-languages-are-supported
+            annyang.setLanguage('en');
+
+            // Start listening. You can call this here, or attach this call to an event, button, etc.
+            annyang.start();
+        } else {
+            $('#noannyang').show();
+            $('.alert').show();
+            $(document).ready(function() {
+                $('#unsupported').fadeIn('fast');
+            });
+        }
+    </script>
+</body>
+
+</html>
